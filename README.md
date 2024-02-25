@@ -1,5 +1,3 @@
-# Passenger-Counter
-
 ## Overview
 The Passenger Counter project is designed to capture and save video from two cameras simultaneously. It organizes saved videos in a directory structure based on the camera number and the date. This project is particularly useful for monitoring and counting purposes in transportation systems, entry points, or any area where passenger or people counting is required.
 
