@@ -33,7 +33,7 @@ Before running this project, ensure you have the following installed:
      ```
    - On Windows:
      ```
-     .\env_nameenv_name\Scripts\activate
+     .\env_name\Scripts\activate
      ```
 
 5. **Install the required libraries:**
