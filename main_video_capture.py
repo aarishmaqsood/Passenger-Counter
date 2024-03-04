@@ -5,50 +5,44 @@ from utils.video_capture_functions import create_directory_structure, initialize
 
 def main(fps, frame_width, frame_height, base_path):
     try:
-        # Initialize video capture for both cameras
-        cap1 = cv2.VideoCapture(0)
-        cap2 = cv2.VideoCapture(1)
-        
-        frame_size = (frame_width, frame_height)
-        
-        if not cap1.isOpened() or not cap2.isOpened():
-            print("Error: Cameras could not be opened.")
+        # Attempt to initialize video capture for cameras
+        caps = [cv2.VideoCapture(i) for i in range(4)]  # Adjust the range of availaible cameras
+        # Filter out cameras that could not be opened
+        caps = [cap for cap in caps if cap.isOpened()]
+
+        if not caps:
+            print("Error: No cameras could be opened.")
             return
-        
+
+        frame_size = (frame_width, frame_height)
         print("Press 'q' to exit...")
 
         while True:
             start_time = datetime.datetime.now()
-            directory1 = create_directory_structure(base_path, 1)
-            directory2 = create_directory_structure(base_path, 2)
-            writer1 = initialize_writer(directory1, start_time, frame_size, fps)
-            writer2 = initialize_writer(directory2, start_time, frame_size, fps)
+            directories = [create_directory_structure(base_path, i+1) for i in range(len(caps))]
+            writers = [initialize_writer(directories[i], start_time, frame_size, fps) for i in range(len(caps))]
             
             end_time = start_time + datetime.timedelta(minutes=1)
             while datetime.datetime.now() < end_time:
-                frame1 = capture_and_write(cap1, writer1, frame_size)
-                frame2 = capture_and_write(cap2, writer2, frame_size)
-                
-                if frame1 is not None:
-                    cv2.imshow('Camera 1', frame1)
-                if frame2 is not None:
-                    cv2.imshow('Camera 2', frame2)
-                
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    raise KeyboardInterrupt
-            writer1.release()
-            writer2.release()
-            cv2.destroyWindow('Camera 1')
-            cv2.destroyWindow('Camera 2')
+                for i, cap in enumerate(caps):
+                    frame = capture_and_write(cap, writers[i], frame_size)
+                    if frame is not None:
+                        cv2.imshow(f'Camera {i+1}', frame)
+                    
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        raise KeyboardInterrupt
+            
+            for writer in writers:
+                writer.release()
+            for i in range(len(caps)):
+                cv2.destroyWindow(f'Camera {i+1}')
 
     except KeyboardInterrupt:
         print("Exiting...")
 
     finally:
-        if cap1:
-            cap1.release()
-        if cap2:
-            cap2.release()
+        for cap in caps:
+            cap.release()
         cv2.destroyAllWindows()
 
 if __name__ == "__main__":
