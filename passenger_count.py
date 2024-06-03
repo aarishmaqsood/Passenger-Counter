@@ -9,17 +9,7 @@ def process_video(camera_id, roi, db_manager):
     conf_threshold = 0.3
     model = YOLO("weights/yolov8n.pt")  # Adjust model path
     
-    # Object classes
-    classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
-                  "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
-                  "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
-                  "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
-                  "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
-                  "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
-                  "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
-                  "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
-                  "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
-                  "teddy bear", "hair drier", "toothbrush"]
+    PERSON_CLASS_ID = 0
 
     cap = cv2.VideoCapture(camera_id)
     rect_start = (roi['x1'], roi['y1'])
@@ -38,14 +28,14 @@ def process_video(camera_id, roi, db_manager):
         for r in results:
             boxes = r.boxes
             for box in boxes:
-                if box.conf[0] >= conf_threshold and classNames[int(box.cls[0])] == "person":
+                if box.conf[0] >= conf_threshold and int(box.cls[0]) == PERSON_CLASS_ID:
                     x1, y1, x2, y2 = map(int, box.xyxy[0])
                     if x1 > rect_start[0] and y1 > rect_start[1] and x2 < rect_end[0] and y2 < rect_end[1]:
                         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
                         count += 1
 
-        # cv2.putText(img, f'Count: {count}', (rect_start[0], rect_start[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        # cv2.imshow(f'Camera {camera_id}', img)    
+        cv2.putText(img, f'Count: {count}', (rect_start[0], rect_start[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.imshow(f'Camera {camera_id}', img)    
 
         # Save the count every 5 minutes
         if datetime.now() - last_save_time >= timedelta(minutes=5):
