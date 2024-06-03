@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from ruamel.yaml import YAML
 from datetime import datetime
@@ -46,13 +47,16 @@ def update_roi_for_cameras():
     save_config(config)
 
 class CountDatabaseManager:
-    def __init__(self, db_name='people_counting.db'):
+    def __init__(self, db_name='database/people_counting.db'):
         self.db_name = db_name
         self.conn = None
         self.setup_database()
 
     def setup_database(self):
         """ Set up the database connection and create the table if it doesn't exist. """
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(self.db_name), exist_ok=True)
+        
         # Allow connection to be shared across threads
         self.conn = sqlite3.connect(self.db_name, check_same_thread=False)
         cursor = self.conn.cursor()
@@ -82,4 +86,5 @@ class CountDatabaseManager:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
+
 
