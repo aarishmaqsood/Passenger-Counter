@@ -44,8 +44,8 @@ def process_video(camera_id, roi, db_manager):
                         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
                         count += 1
 
-        cv2.putText(img, f'Count: {count}', (rect_start[0], rect_start[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.imshow(f'Camera {camera_id}', img)    
+        # cv2.putText(img, f'Count: {count}', (rect_start[0], rect_start[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        # cv2.imshow(f'Camera {camera_id}', img)    
 
         # Save the count every 5 minutes
         if datetime.now() - last_save_time >= timedelta(minutes=5):
