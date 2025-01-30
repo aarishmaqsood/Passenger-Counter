@@ -1,6 +1,7 @@
 import cv2
-import threading
 import time
+import queue
+import threading
 from datetime import datetime, timedelta
 from ultralytics import YOLO
 from utils.vision_utils import CountDatabaseManager, load_config  
@@ -11,7 +12,7 @@ def process_video(camera_id, roi, db_manager):
     
     PERSON_CLASS_ID = 0
 
-    cap = cv2.VideoCapture(camera_id)
+    cap = cv2.VideoCapture(camera_id, cv2.CAP_FFMPEG)
     rect_start = (roi['x1'], roi['y1'])
     rect_end = (roi['x2'], roi['y2'])
     last_save_time = datetime.now()

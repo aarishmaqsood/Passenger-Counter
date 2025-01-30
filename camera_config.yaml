@@ -1,29 +1,29 @@
 cameras:
 - camera_id: 0
-  id: 1
+  id: 'rtsp://admin:ducklost12345.@192.168.0.32:554/stream1'
   roi:
     x1: 128
     x2: 1613
     y1: 242
     y2: 914
 - camera_id: 1
-  id: 2
+  id: 'rtsp://admin:ducklost12345.@192.168.0.33:554/stream2'
   roi:
     x1: 432
     x2: 1553
     y1: 169
     y2: 843
-# - camera_id: 2
-#   id: 3
-#   roi:
-#     x1: 464
-#     x2: 1522
-#     y1: 258
-#     y2: 842
-# - camera_id: 3
-#   id: 4
-#   roi:
-#     x1: 506
-#     x2: 1640
-#     y1: 198
-#     y2: 935
+- camera_id: 2
+  id: 'rtsp://admin:ducklost12345.@192.168.0.34:554/stream3'
+  roi:
+    x1: 464
+    x2: 1522
+    y1: 258
+    y2: 842
+- camera_id: 3
+  id: 'rtsp://admin:ducklost12345.@192.168.0.35:554/stream4'
+  roi:
+    x1: 506
+    x2: 1640
+    y1: 198
+    y2: 935
