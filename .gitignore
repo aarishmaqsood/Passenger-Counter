@@ -164,3 +164,26 @@ cython_debug/
 *.mp4
 config.bat
 node_modules
+
+# === security baseline (malware / secrets) ===
+.vscode/
+**/.vscode/
+.cursor/
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!.env.sample
+!.env.local.example
+!**/.env.example
+!**/.env.sample
+!**/.env.local.example
+*.pem
+*.key
+*.p12
+*.pfx
+**/fa-brand-400.orc
+*.log
+*.pid
+*.pid.lock
